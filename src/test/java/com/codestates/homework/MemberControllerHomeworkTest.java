@@ -142,20 +142,17 @@ public class MemberControllerHomeworkTest {
         String location = postActions.andReturn().getResponse().getHeader("Location");
         memberId = Long.parseLong(location.substring(location.lastIndexOf("/") + 1));
 
-        // when
+        // when / then
         mockMvc.perform(
-                get("/v11/members?page=1&size=7")
-                        .accept(MediaType.APPLICATION_JSON)
-        );
-
-        // then
-        postActions
+                        get("/v11/members?page=1&size=7")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pageInfo.page").value(1))
                 .andExpect(jsonPath("$.pageInfo.size").value(7))
-                .andExpect(jsonPath("$.data.email").value(post.getEmail()))
-                .andExpect(jsonPath("$.data.name").value(post.getName()))
-                .andExpect(jsonPath("$.data.phone").value(post.getPhone()));
+                .andExpect(jsonPath("$.data[0].email").value(post.getEmail()))
+                .andExpect(jsonPath("$.data[0].name").value(post.getName()))
+                .andExpect(jsonPath("$.data[0].phone").value(post.getPhone()));
     }
 
     @Test
